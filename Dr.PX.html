@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مولد الصور بالذكاء الاصطناعي</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background-color: #0d1117;
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .container {
+            background: #161b22;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 0px 15px rgba(0, 123, 255, 0.5);
+            width: 90%;
+            max-width: 500px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            margin-top: 10px;
+            outline: none;
+            background-color: #21262d;
+            color: white;
+        }
+        button {
+            padding: 12px 20px;
+            font-size: 16px;
+            background: linear-gradient(90deg, #007BFF, #00d4ff);
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: linear-gradient(90deg, #0056b3, #0099cc);
+        }
+        img {
+            margin-top: 20px;
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 مولد الصور بالذكاء الاصطناعي</h1>
+        <input type="text" id="query" placeholder="اكتب وصف الصورة التي تريدها...">
+        <button onclick="generateImage()">🔍 إنشاء الصورة</button>
+        <div id="imageContainer" class="hidden">
+            <img id="generatedImage" src="" alt="الصورة التي تم إنشاؤها" onerror="handleImageError()">
+            <br>
+            <a id="downloadLink" download="generated-image.jpg">
+                <button>⬇️ تحميل الصورة</button>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function generateImage() {
+            let query = document.getElementById("query").value.trim();
+            if (!query) {
+                alert("الرجاء إدخال وصف للصورة.");
+                return;
+            }
+            let imageUrl = `http://imgapi.ct.ws/img/api.php?text=${encodeURIComponent(query)}`;
+            let imageElement = document.getElementById("generatedImage");
+            let imageContainer = document.getElementById("imageContainer");
+            let downloadLink = document.getElementById("downloadLink");
+            
+            imageElement.src = imageUrl;
+            imageElement.onload = () => imageContainer.classList.remove("hidden");
+            imageElement.onerror = () => alert("حدث خطأ في تحميل الصورة، حاول مجددًا.");
+            downloadLink.href = imageUrl;
+        }
+
+        function handleImageError() {
+            alert("تعذر تحميل الصورة. تأكد من إدخال وصف صحيح أو حاول مرة أخرى لاحقًا.");
+            document.getElementById("imageContainer").classList.add("hidden");
+        }
+    </script>
+</body>
+</html>
